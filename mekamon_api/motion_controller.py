@@ -12,9 +12,6 @@ import logging
 import sys
 import time
 
-import Adafruit_BluefruitLE
-from Adafruit_BluefruitLE.services import UART, DeviceInformation
-
 import config
 from utils import generate_cmd, unhexlify, execute_cmds, execute_cmd, interpolate_range
 
@@ -55,8 +52,9 @@ class MotionController(object):
         assert turn < 128 and turn >= -128 
      
         cmd = [cmd_type,
-               fwd,
+               3,
                strafe,
+               fwd,
                turn
                ]
 

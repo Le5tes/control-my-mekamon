@@ -64,11 +64,10 @@ def calc_checksum(cmd):
     """
     Method to calculate BLE/UART message checksums for Mekamon
 
-    Args: data (byte string) message for Mekamon
+    Args: data (int array) message for Mekamon
     Returns: integer checksum
     """
-
-    ints = [ord(char) for char in cmd]
+    ints = cmd
     checksum = sum(ints)
     checksum %= 256 # roll over if bigger than 8b max
     checksum ^= 256 # twos complement
@@ -99,25 +98,25 @@ def generate_cmd(int_sequence):
     #logging.debug('int_sequence:', int_sequence)
 
     # build the command, append vars in hex string '\xff' format
-    cmd = ''
+    cmd = []
     for x in int_sequence:
         cmd += pack('b',x) # b means treat as signed +- 128
 
-    #logging.debug('cmd string:', cmd)
+    logging.debug('cmd string:', cmd)
 
     # COBS before the checksum and terminal byte
-    cmd = cobs.encode(cmd)
-    #logging.debug('cobs encode: ', cmd)
-
+    cmd = cobs.encode(bytes(cmd))
+    logging.debug('cobs encode: ', cmd)
+    cmd = list(cmd)
     # checksum
     checksum = calc_checksum(cmd)
-    cmd += chr(checksum) # chr hexifies 0-255
 
+    cmd.append(checksum) # chr hexifies 0-255
     # terminator
-    cmd += chr(0)
+    cmd.append(0)
 
     # convert to hex literal string without \x
-    cmd = binascii.hexlify(cmd)
+    cmd = binascii.hexlify(bytes(cmd))
 
     return cmd
 

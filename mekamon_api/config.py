@@ -29,6 +29,6 @@ message_delay = 0.05 # Time to sleep after sending message
 # Server settings
 # Here we define the UDP IP address as well as the port number that we have
 # already defined in the client python script.
-UDP_IP_ADDRESS = "192.168.4.2"
+UDP_IP_ADDRESS = "localhost"
 UDP_PORT_NO = 6789
 
